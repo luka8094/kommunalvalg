@@ -1,18 +1,26 @@
 package com.example.kommunevalgapp.model;
 
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.sun.istack.NotNull;
+
+import javax.persistence.*;
 
 @Entity
 @Table(name="kandidater")
 public class Kandidat {
 
     @Id
-    private long id;
+    @GeneratedValue( strategy = GenerationType.IDENTITY)
+    private Long id;
 
+    @NotNull
     private String navn;
+
+    @ManyToOne
+    @JoinColumn(name = "parti_initialer")
+    @JsonManagedReference
+    private Parti parti;
 
     public Kandidat(){ }
 

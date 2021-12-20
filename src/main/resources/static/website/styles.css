@@ -1,0 +1,7 @@
+#all-kandiater{
+    display: flex;
+    height: 50px;
+    width: 100px;
+    background: lightgray;
+    border-style: none;
+}
