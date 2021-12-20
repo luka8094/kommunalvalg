@@ -9,9 +9,9 @@ function getAllKandidater() {
 
     console.log("button was clicked")
     fetch("http://localhost:8080/kandidater")
-        .then(res => res.json)
+        .then(res => res.json())
         .then( res => {
-            let arr = JSON.stringify(res)
+            let arr = JSON.stringify(res).split(/[,]/g)
             console.log(arr)
         })
 
