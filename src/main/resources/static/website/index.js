@@ -1,18 +1,43 @@
 console.log("så er det hul igennem, du!")
 
 const getAllKandidaterButton = document.getElementById("all-kandiater")
-const root = document.getElementsByClassName("root")[0]
+const kandidatListElement = document.getElementsByClassName("kandidat-list")[0]
 
 getAllKandidaterButton.onclick = getAllKandidater
+
+function localKandidaterCache(){
+    let kandidaterArray = []
+
+    return{
+
+        addKandidat : (kandidat) => kandidaterArray.push(kandidat),
+
+        getAllKandidater : () => kandidaterArray,
+
+        findByParti : (partiInitialer) => kandidaterArray.find( kandidat => kandidat[parti][0] == partiInitialer)
+
+    }
+}
+
+let kandidaterCache = localKandidaterCache()
 
 function getAllKandidater() {
 
     console.log("button was clicked")
     fetch("http://localhost:8080/kandidater")
-        .then(res => res.json())
-        .then( res => {
-            let arr = JSON.stringify(res).split(/[,]/g)
-            console.log(arr)
+        .then(response => response.json())
+        .then( response => {
+            JSONdataIterator(response)
         })
 
+}
+
+function JSONdataIterator(json){
+    //let temporaryArray = []
+    for(key in json){
+        //temporaryArray.push(json[key])
+        kandidaterCache.addKandidat(json[key])
+    }
+    //temporaryArray.forEach( e => console.log(e.navn))
+    console.log(kandidaterCache.getAllKandidater())
 }
