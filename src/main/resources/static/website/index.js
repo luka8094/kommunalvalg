@@ -1,7 +1,7 @@
 console.log("så er det hul igennem, du!")
 
 const getAllKandidaterButton = document.getElementById("all-kandiater")
-const kandidatListElement = document.getElementsByClassName("kandidat-list")[0]
+let kandidatListElement = document.getElementsByClassName("kandidat-list")[0]
 
 getAllKandidaterButton.onclick = getAllKandidater
 
@@ -14,7 +14,7 @@ function localKandidaterCache(){
 
         getAllKandidater : () => kandidaterArray,
 
-        findByParti : (partiInitialer) => kandidaterArray.find( kandidat => kandidat[parti][0] == partiInitialer)
+        findByParti : (partiInitialer) => kandidaterArray.find( kandidat => kandidat.parti.initialer == partiInitialer)
 
     }
 }
@@ -28,8 +28,8 @@ function getAllKandidater() {
         .then(response => response.json())
         .then( response => {
             JSONdataIterator(response)
+            refreshKanidatList()
         })
-
 }
 
 function JSONdataIterator(json){
@@ -39,5 +39,25 @@ function JSONdataIterator(json){
         kandidaterCache.addKandidat(json[key])
     }
     //temporaryArray.forEach( e => console.log(e.navn))
-    console.log(kandidaterCache.getAllKandidater())
+    //console.log(kandidaterCache.findByParti("A"))
+}
+
+function refreshKanidatList(){
+
+    let kandidatRows = []
+    let kandidatData = kandidaterCache.getAllKandidater()
+
+    kandidatData.forEach( kandidat =>
+
+        kandidatRows.push(`<div class="kandiat-row">
+                <div class="kandidat-navn">${kandidat.navn}</div>
+                <div class="kandidat-parti">${kandidat.parti.intitialer}</div>
+                </div>`)
+    )
+
+    kandidatRows.join(",")
+    console.log(kandidatRows)
+
+    kandidatListElement.innerHTML = kandidatRows.toString();
+
 }
